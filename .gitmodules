@@ -1,0 +1,6 @@
+[submodule "lib/matvec"]
+	path = lib/matvec
+	url = git@github.com:ParonPuff/matvec_lib.git
+[submodule "lib/object_loader"]
+	path = lib/object_loader
+	url = git@github.com:ParonPuff/object_loader_lib.git
