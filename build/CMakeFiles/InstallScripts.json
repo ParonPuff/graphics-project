@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/paronpuff/code/school/grpahics/project/build/cmake_install.cmake",
+		"/home/paronpuff/code/school/grpahics/project/build/lib/matvec/cmake_install.cmake",
+		"/home/paronpuff/code/school/grpahics/project/build/lib/object_loader/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

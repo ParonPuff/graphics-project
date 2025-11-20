@@ -1,0 +1,50 @@
+[
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/main.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/main.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/main.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/app/app.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/app/app.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/app/app.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/app/app.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/app/console.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/app/console.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/app/console.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/app/console.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/core/input.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/core/input.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/core/input.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/core/input.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/core/renderer.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/core/renderer.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/core/renderer.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/core/renderer.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/core/shader.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/core/shader.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/core/shader.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/core/shader.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/src -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -std=gnu++20 -o CMakeFiles/studio3d.dir/src/core/window.cpp.o -c /home/paronpuff/code/school/grpahics/project/src/core/window.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/src/core/window.cpp",
+  "output": "CMakeFiles/studio3d.dir/src/core/window.cpp.o"
+},
+{
+  "directory": "/home/paronpuff/code/school/grpahics/project/build/lib/object_loader",
+  "command": "/usr/bin/c++  -I/home/paronpuff/code/school/grpahics/project/lib/object_loader/include -I/home/paronpuff/code/school/grpahics/project/lib/matvec/include -std=gnu++20 -o CMakeFiles/objloader.dir/src/obj_loader.cpp.o -c /home/paronpuff/code/school/grpahics/project/lib/object_loader/src/obj_loader.cpp",
+  "file": "/home/paronpuff/code/school/grpahics/project/lib/object_loader/src/obj_loader.cpp",
+  "output": "lib/object_loader/CMakeFiles/objloader.dir/src/obj_loader.cpp.o"
+}
+]
