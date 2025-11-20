@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "core/input.hpp"
 #include <stdexcept>
 
 Window::Window(int width, int height, const char* title) {
@@ -14,6 +15,13 @@ Window::Window(int width, int height, const char* title) {
     glfwTerminate();
     throw std::runtime_error("Failed to create GLFW window");
   }
+
+  glfwSetWindowUserPointer(m_window, nullptr);
+  glfwSetKeyCallback(m_window, [](GLFWwindow* win, int key, int scancode, int action, int mods){
+      auto* handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(win));
+      if (handler)
+          handler->onKey(key, scancode, action, mods);
+  });
 
   glfwMakeContextCurrent(m_window);
 }
@@ -33,4 +41,8 @@ void Window::pollEvents() const {
 
 void Window::swapBuffers() const {
   glfwSwapBuffers(m_window);
+}
+
+void Window::setInputHandler(InputHandler* handler) {
+  glfwSetWindowUserPointer(m_window,handler);
 }

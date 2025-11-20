@@ -15,6 +15,7 @@ CMakeFiles/studio3d.dir/src/core/window.cpp.o: \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
  /usr/include/bits/stdint-least.h /usr/include/GL/gl.h \
  /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
+ /home/paronpuff/code/school/grpahics/project/src/core/input.hpp \
  /usr/include/c++/15.2.1/stdexcept /usr/include/c++/15.2.1/exception \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \

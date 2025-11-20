@@ -1,12 +1,14 @@
+#include <optional>
+#include <string>
 class Console {
-  public:
-    bool isOpen() const;
-    void toggle();
+public:
+  bool isOpen() const;
+  void toggle();
 
-    bool onKey(int key);
+  bool onKey(int key);
+  std::optional<std::string> pollCommand();
 
-    std::optional<std::string> pollCommand();
-  private:
-    bool open = false;
-    std::string buffer;
+private:
+  bool open = false;
+  std::string buffer;
 };
