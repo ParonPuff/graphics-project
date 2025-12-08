@@ -10,7 +10,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/paronpuff/code/school/grpahics/project/src/app/app.cpp" "CMakeFiles/studio3d.dir/src/app/app.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/app/app.cpp.o.d"
   "/home/paronpuff/code/school/grpahics/project/src/app/console.cpp" "CMakeFiles/studio3d.dir/src/app/console.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/app/console.cpp.o.d"
+  "/home/paronpuff/code/school/grpahics/project/src/core/camera.cpp" "CMakeFiles/studio3d.dir/src/core/camera.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/core/camera.cpp.o.d"
   "/home/paronpuff/code/school/grpahics/project/src/core/input.cpp" "CMakeFiles/studio3d.dir/src/core/input.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/core/input.cpp.o.d"
+  "/home/paronpuff/code/school/grpahics/project/src/core/projection.cpp" "CMakeFiles/studio3d.dir/src/core/projection.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/core/projection.cpp.o.d"
   "/home/paronpuff/code/school/grpahics/project/src/core/renderer.cpp" "CMakeFiles/studio3d.dir/src/core/renderer.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/core/renderer.cpp.o.d"
   "/home/paronpuff/code/school/grpahics/project/src/core/shader.cpp" "CMakeFiles/studio3d.dir/src/core/shader.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/core/shader.cpp.o.d"
   "/home/paronpuff/code/school/grpahics/project/src/core/window.cpp" "CMakeFiles/studio3d.dir/src/core/window.cpp.o" "gcc" "CMakeFiles/studio3d.dir/src/core/window.cpp.o.d"

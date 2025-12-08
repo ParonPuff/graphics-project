@@ -122,8 +122,6 @@ CMakeFiles/studio3d.dir/src/core/renderer.cpp.o: \
  /usr/include/c++/15.2.1/bits/vector.tcc \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/types.hpp \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec3.hpp \
- /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec4.hpp \
- /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./mat4.hpp \
  /usr/include/c++/15.2.1/cmath /usr/include/math.h \
  /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
  /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
@@ -143,6 +141,8 @@ CMakeFiles/studio3d.dir/src/core/renderer.cpp.o: \
  /usr/include/c++/15.2.1/tr1/poly_hermite.tcc \
  /usr/include/c++/15.2.1/tr1/poly_laguerre.tcc \
  /usr/include/c++/15.2.1/tr1/riemann_zeta.tcc \
+ /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec4.hpp \
+ /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./mat4.hpp \
  /usr/include/c++/15.2.1/stdexcept /usr/include/c++/15.2.1/exception \
  /usr/include/c++/15.2.1/bits/exception_ptr.h \
  /usr/include/c++/15.2.1/bits/cxxabi_init_exception.h \

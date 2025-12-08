@@ -1,3 +1,5 @@
+/home/paronpuff/code/school/grpahics/project/build/CMakeFiles/ImGui.dir
+/home/paronpuff/code/school/grpahics/project/build/CMakeFiles/ImGuiFileDialog.dir
 /home/paronpuff/code/school/grpahics/project/build/CMakeFiles/studio3d.dir
 /home/paronpuff/code/school/grpahics/project/build/CMakeFiles/edit_cache.dir
 /home/paronpuff/code/school/grpahics/project/build/CMakeFiles/rebuild_cache.dir

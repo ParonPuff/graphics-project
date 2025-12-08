@@ -123,8 +123,6 @@ CMakeFiles/studio3d.dir/src/main.cpp.o: \
  /usr/include/c++/15.2.1/bits/vector.tcc \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/types.hpp \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec3.hpp \
- /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec4.hpp \
- /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./mat4.hpp \
  /usr/include/c++/15.2.1/cmath /usr/include/math.h \
  /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
  /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
@@ -144,6 +142,8 @@ CMakeFiles/studio3d.dir/src/main.cpp.o: \
  /usr/include/c++/15.2.1/tr1/poly_hermite.tcc \
  /usr/include/c++/15.2.1/tr1/poly_laguerre.tcc \
  /usr/include/c++/15.2.1/tr1/riemann_zeta.tcc \
+ /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec4.hpp \
+ /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./mat4.hpp \
  /home/paronpuff/code/school/grpahics/project/src/app/../core/window.hpp \
  /usr/include/GLFW/glfw3.h \
  /home/paronpuff/code/school/grpahics/project/src/app/../core/input.hpp

@@ -5,15 +5,21 @@ studio3d: \
   CMakeFiles/studio3d.dir/src/main.cpp.o \
   CMakeFiles/studio3d.dir/src/app/app.cpp.o \
   CMakeFiles/studio3d.dir/src/app/console.cpp.o \
+  CMakeFiles/studio3d.dir/src/core/camera.cpp.o \
   CMakeFiles/studio3d.dir/src/core/input.cpp.o \
+  CMakeFiles/studio3d.dir/src/core/projection.cpp.o \
   CMakeFiles/studio3d.dir/src/core/renderer.cpp.o \
   CMakeFiles/studio3d.dir/src/core/shader.cpp.o \
   CMakeFiles/studio3d.dir/src/core/window.cpp.o \
   lib/object_loader/libobjloader.a \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libglfw.so \
   /usr/lib/libGLEW.so \
+  libImGui.a \
+  libImGuiFileDialog.a \
+  libImGui.a \
   /usr/lib/libGLX.so \
   /usr/lib/libOpenGL.so \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libglfw.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libstdc++.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libm.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libm.so \
@@ -68,7 +74,11 @@ CMakeFiles/studio3d.dir/src/app/app.cpp.o:
 
 CMakeFiles/studio3d.dir/src/app/console.cpp.o:
 
+CMakeFiles/studio3d.dir/src/core/camera.cpp.o:
+
 CMakeFiles/studio3d.dir/src/core/input.cpp.o:
+
+CMakeFiles/studio3d.dir/src/core/projection.cpp.o:
 
 CMakeFiles/studio3d.dir/src/core/renderer.cpp.o:
 
@@ -82,9 +92,17 @@ lib/object_loader/libobjloader.a:
 
 /usr/lib/libGLEW.so:
 
+libImGui.a:
+
+libImGuiFileDialog.a:
+
+libImGui.a:
+
 /usr/lib/libGLX.so:
 
 /usr/lib/libOpenGL.so:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libglfw.so:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libstdc++.so:
 

@@ -83,14 +83,22 @@ void Renderer::loadMesh(const Mesh &mesh) {
 }
 void Renderer::setModelMatrix(const matvec::mat4 &m) { m_matrix = m; }
 
+void Renderer::setViewMatrix(const matvec::mat4 &v) { v_matrix = v; }
+
+void Renderer::setProjectionMatrix(const matvec::mat4 &p) { p_matrix = p; }
+
 void Renderer::draw() {
   glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   shader->use();
 
-  GLint loc = glGetUniformLocation(shader->id(), "uModel");
-  glUniformMatrix4fv(loc, 1, GL_TRUE, m_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "uModel"), 1, GL_TRUE,
+                     m_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "uView"), 1, GL_TRUE,
+                     v_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "uProj"), 1, GL_TRUE,
+                     p_matrix.data);
 
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
