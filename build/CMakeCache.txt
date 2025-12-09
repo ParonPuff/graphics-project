@@ -28,7 +28,7 @@ CMAKE_BUILD_TYPE:STRING=
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler
-CMAKE_CXX_COMPILER:STRING=/usr/bin/c++
+CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -272,9 +272,6 @@ Studio3D_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 Studio3D_SOURCE_DIR:STATIC=/home/paronpuff/code/school/grpahics/project
-
-//The directory containing a CMake configuration file for glfw3.
-glfw3_DIR:PATH=glfw3_DIR-NOTFOUND
 
 //Value Computed by CMake
 matvec_BINARY_DIR:STATIC=/home/paronpuff/code/school/grpahics/project/build/lib/matvec

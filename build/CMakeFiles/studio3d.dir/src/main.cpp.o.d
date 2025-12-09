@@ -145,5 +145,6 @@ CMakeFiles/studio3d.dir/src/main.cpp.o: \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec4.hpp \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./mat4.hpp \
  /home/paronpuff/code/school/grpahics/project/src/app/../core/window.hpp \
+ /home/paronpuff/code/school/grpahics/project/src/app/../core/input.hpp \
  /usr/include/GLFW/glfw3.h \
- /home/paronpuff/code/school/grpahics/project/src/app/../core/input.hpp
+ /home/paronpuff/code/school/grpahics/project/src/core/camera.hpp

@@ -145,8 +145,9 @@ CMakeFiles/studio3d.dir/src/app/app.cpp.o: \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./vec4.hpp \
  /home/paronpuff/code/school/grpahics/project/lib/matvec/include/./mat4.hpp \
  /home/paronpuff/code/school/grpahics/project/src/app/../core/window.hpp \
- /usr/include/GLFW/glfw3.h \
  /home/paronpuff/code/school/grpahics/project/src/app/../core/input.hpp \
+ /usr/include/GLFW/glfw3.h \
+ /home/paronpuff/code/school/grpahics/project/src/core/camera.hpp \
  /home/paronpuff/code/school/grpahics/project/src/app/../core/projection.hpp \
  /home/paronpuff/code/school/grpahics/project/lib/ImGuiFileDialog/ImGuiFileDialog.h \
  /home/paronpuff/code/school/grpahics/project/lib/ImGuiFileDialog/ImGuiFileDialogConfig.h \
@@ -293,4 +294,4 @@ CMakeFiles/studio3d.dir/src/app/app.cpp.o: \
  /usr/include/c++/15.2.1/bits/enable_special_members.h \
  /home/paronpuff/code/school/grpahics/project/lib/ImGui/imgui_impl_glfw.h \
  /home/paronpuff/code/school/grpahics/project/lib/ImGui/imgui_impl_opengl3.h \
- /usr/include/c++/15.2.1/iostream
+ /usr/include/c++/15.2.1/iostream /usr/include/c++/15.2.1/math.h
