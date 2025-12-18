@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/paronpuff/code/school/grpahics/project/lib/ImGuiFileDialog/ImGuiFileDialog.cpp" "CMakeFiles/ImGuiFileDialog.dir/lib/ImGuiFileDialog/ImGuiFileDialog.cpp.o" "gcc" "CMakeFiles/ImGuiFileDialog.dir/lib/ImGuiFileDialog/ImGuiFileDialog.cpp.o.d"
+  "/home/dv22/dv22skn/graphics/project/lib/ImGuiFileDialog/ImGuiFileDialog.cpp" "CMakeFiles/ImGuiFileDialog.dir/lib/ImGuiFileDialog/ImGuiFileDialog.cpp.o" "gcc" "CMakeFiles/ImGuiFileDialog.dir/lib/ImGuiFileDialog/ImGuiFileDialog.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -187,74 +187,83 @@ void App::run() {
 }
 
 void App::onKey(int key, int scancode, int action, int mods) {
-  if (action != GLFW_PRESS && action != GLFW_REPEAT)
-    return;
+	/*if (action != GLFW_PRESS && action != GLFW_REPEAT)*/
+	/*	return;*/
 
-  const float moveSpeed = 0.1f;
+	const float moveSpeed = 0.1f;
 
-  switch (key) {
-  // camera movement
-  case GLFW_KEY_W:
-    camera.moveLocal(0, 0, -moveSpeed);
-    break;
-  case GLFW_KEY_A:
-    camera.moveLocal(-moveSpeed, 0, 0);
-    break;
-  case GLFW_KEY_S:
-    camera.moveLocal(0, 0, moveSpeed);
-    break;
-  case GLFW_KEY_D:
-    camera.moveLocal(moveSpeed, 0, 0);
-    break;
-  case GLFW_KEY_E:
-    camera.moveLocal(0, moveSpeed, 0);
-    break;
-  case GLFW_KEY_Q:
-    camera.moveLocal(0, -moveSpeed, 0);
-    break;
-  // model transformations
-  case GLFW_KEY_J:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::translate(-0.1, 0, 0);
-    break;
-  case GLFW_KEY_L:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0.1, 0, 0);
-    break;
-  case GLFW_KEY_I:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, 0.1, 0);
-    break;
-  case GLFW_KEY_K:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, -0.1, 0);
-    break;
-  case GLFW_KEY_UP:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateX(.17f);
-    break;
-  case GLFW_KEY_DOWN:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateX(-.17f);
-    break;
-  case GLFW_KEY_LEFT:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateY(.17f);
-    break;
-  case GLFW_KEY_RIGHT:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateY(-.17f);
-    break;
-  case GLFW_KEY_O:
-    std::cout << "Enter object file: ";
-    std::string file;
-    std::cin >> file;
-    loadObject(file);
-    break;
-  }
+	switch (key) {
+		// camera movement
+		case GLFW_KEY_W:
+			camera.moveLocal(0, 0, -moveSpeed);
+			break;
+		case GLFW_KEY_A:
+			camera.moveLocal(-moveSpeed, 0, 0);
+			break;
+		case GLFW_KEY_S:
+			camera.moveLocal(0, 0, moveSpeed);
+			break;
+		case GLFW_KEY_D:
+			camera.moveLocal(moveSpeed, 0, 0);
+			break;
+		case GLFW_KEY_E:
+			camera.moveLocal(0, moveSpeed, 0);
+			break;
+		case GLFW_KEY_Q:
+			camera.moveLocal(0, -moveSpeed, 0);
+			break;
+		// model transformations
+		case GLFW_KEY_J:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::translate(-0.1, 0, 0);
+			break;
+		case GLFW_KEY_L:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0.1, 0, 0);
+			break;
+		case GLFW_KEY_I:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, 0.1, 0);
+			break;
+		case GLFW_KEY_K:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, -0.1, 0);
+			break;
+		case GLFW_KEY_UP:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::rotateX(.17f);
+			break;
+		case GLFW_KEY_DOWN:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::rotateX(-.17f);
+			break;
+		case GLFW_KEY_LEFT:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::rotateY(.17f);
+			break;
+		case GLFW_KEY_RIGHT:
+			m_modelMatrix = m_modelMatrix * matvec::mat4::rotateY(-.17f);
+			break;
+		case GLFW_KEY_LEFT_SHIFT:		
+			if (action == GLFW_PRESS) {
+				m_mouseRotating = true;
+				m_firstMouse = true; // Reset on new click
+			} else if (action == GLFW_RELEASE) {
+				m_mouseRotating = false;
+			}
+			
+			break;
+		case GLFW_KEY_O:
+			std::cout << "Enter object file: ";
+			std::string file;
+			std::cin >> file;
+			loadObject(file);
+			break;
+	}
 }
 
 void App::onMouseButton(int button, int action, int mods) {
-  if (button == GLFW_MOUSE_BUTTON_LEFT) {
-    if (action == GLFW_PRESS) {
-      m_mouseRotating = true;
-      m_firstMouse = true; // Reset on new click
-    } else if (action == GLFW_RELEASE) {
-      m_mouseRotating = false;
-    }
-  }
+  /*if (button == GLFW_MOUSE_BUTTON_LEFT) {*/
+  /*  if (action == GLFW_PRESS) {*/
+  /*    m_mouseRotating = true;*/
+  /*    m_firstMouse = true; // Reset on new click*/
+  /*  } else if (action == GLFW_RELEASE) {*/
+  /*    m_mouseRotating = false;*/
+  /*  }*/
+  /*}*/
 }
 
 void App::onMouseMove(double xpos, double ypos) {

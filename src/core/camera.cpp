@@ -43,7 +43,7 @@ void Camera::rotateYaw(float r) {
   matvec::vec3 dir = (pref - p0).normalized();
 
   // Rotate direction around world Y-axis
-  matvec::mat4 R = Vinv * matvec::mat4::rotateY(r) * V;
+  matvec::mat4 R = matvec::mat4::rotateY(r);
   matvec::vec4 newDir = R * matvec::vec4(dir, 0.0f);
 
   // Update reference point at fixed distance
@@ -55,7 +55,7 @@ void Camera::rotateYaw(float r) {
 void Camera::rotatePitch(float r) {
   matvec::vec3 dir = pref - p0;
 
-  matvec::mat4 R = Vinv * matvec::mat4::rotateX(r) * V;
+  matvec::mat4 R = matvec::mat4::rotateX(r);
   matvec::vec4 newDir = R * matvec::vec4(dir, 0.0f);
 
   pref = p0 + matvec::vec3(newDir);
