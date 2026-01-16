@@ -246,7 +246,7 @@ void App::onMouseMove(double xpos, double ypos) {
   const float sensitivity = 0.005f;
 
   if (deltaX != 0) {
-    camera.rotateYaw(-deltaX * sensitivity);
+    camera.rotateYaw(deltaX * sensitivity);
   }
 
   if (deltaY != 0) {
