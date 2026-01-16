@@ -1,5 +1,6 @@
 
 #pragma once
+#include "vec3.hpp"
 #include <types.hpp>
 
 class Camera {
@@ -13,6 +14,8 @@ public:
 
   const matvec::mat4 &getViewMatrix();
   const matvec::mat4 &getInverseViewMatrix();
+
+  const matvec::vec3 &getPosition() const;
 
 private:
   matvec::vec3 p0;

@@ -50,6 +50,10 @@ void App::drawGui() {
   ImGui::Checkbox("Use texture", &useTexture);
   ImGui::SliderFloat3("Light position", &lightPos.x, -10.0f, 10.0f);
   ImGui::ColorEdit3("Light color", &lightColor.x);
+
+  ImGui::ColorEdit3("Ambient", &materialAmbient.x);
+  ImGui::ColorEdit3("Diffuse", &materialDiffuse.x);
+  ImGui::ColorEdit3("Specular", &materialSpecular.x);
   ImGui::SliderFloat("Shininess", &shininess, 1.0f, 128.0f);
 
   if (projectionMode == 0) {
@@ -77,6 +81,19 @@ void App::drawGui() {
     if (ImGuiFileDialog::Instance()->IsOk()) {
       std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
       loadObject(filepath);
+    }
+    ImGuiFileDialog::Instance()->Close();
+  }
+
+  if (ImGui::Button("load Texture")) {
+    ImGuiFileDialog::Instance()->OpenDialog("texKey", "Choose File", ".bmp",
+                                            ".");
+  }
+
+  if (ImGuiFileDialog::Instance()->Display("texKey")) {
+    if (ImGuiFileDialog::Instance()->IsOk()) {
+      std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
+      m_renderer.loadTexture(filepath);
     }
     ImGuiFileDialog::Instance()->Close();
   }
@@ -121,6 +138,18 @@ void App::run() {
 
     m_renderer.setModelMatrix(m_modelMatrix);
     m_renderer.setViewMatrix(camera.getViewMatrix());
+
+    m_renderer.setLightPos(lightPos);
+    m_renderer.setLightColor(lightColor);
+    m_renderer.setViewPos(camera.getPosition());
+
+    m_renderer.setAmbient(materialAmbient);
+    m_renderer.setDiffuse(materialDiffuse);
+    m_renderer.setSpecular(materialSpecular);
+
+    m_renderer.setShininess(shininess);
+
+    m_renderer.setUseTexture(useTexture);
     m_renderer.draw();
 
     ImGui::Render();

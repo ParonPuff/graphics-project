@@ -56,3 +56,4 @@ void Camera::rotatePitch(float r) {
   pref = p0 + matvec::vec3(newDir);
   updateViewMatrix();
 }
+const matvec::vec3 &Camera::getPosition() const { return p0; }

@@ -1,4 +1,6 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "renderer.hpp"
+#include "../lib/stb_image.h"
 #include "core/shader.hpp"
 #include <iostream>
 #include <vector>
@@ -33,7 +35,46 @@ Renderer::Renderer() {
 Renderer::~Renderer() {
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
+  if (textureID)
+    glDeleteTextures(1, &textureID);
   delete shader;
+}
+
+void Renderer::loadTexture(const std::string &path) {
+  if (textureID)
+    glDeleteTextures(1, &textureID);
+
+  int width, height, channels;
+  stbi_set_flip_vertically_on_load(true);
+  unsigned char *data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+
+  if (!data) {
+    std::cerr << "Failed to load texture: " << path << std::endl;
+    return;
+  }
+
+  GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
+
+  glGenTextures(1, &textureID);
+  glBindTexture(GL_TEXTURE_2D, textureID);
+
+  // Texture parameters (very important)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                  GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  // Upload image
+  glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format,
+               GL_UNSIGNED_BYTE, data);
+
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  stbi_image_free(data);
+
+  textureLoaded = true;
+  return;
 }
 
 void Renderer::loadMesh(const Mesh &mesh) {
@@ -100,6 +141,29 @@ void Renderer::setViewMatrix(const matvec::mat4 &v) { v_matrix = v; }
 
 void Renderer::setProjectionMatrix(const matvec::mat4 &p) { p_matrix = p; }
 
+void Renderer::setLightPos(const matvec::vec3 &lightP) { lightPos = lightP; }
+
+void Renderer::setLightColor(const matvec::vec3 &lightC) {
+  lightColor = lightC;
+}
+void Renderer::setViewPos(const matvec::vec3 &viewP) { viewPos = viewP; }
+
+void Renderer::setAmbient(const matvec::vec3 &ambient) {
+  materialAmbient = ambient;
+}
+void Renderer::setDiffuse(const matvec::vec3 &diffuse) {
+  materialDiffuse = diffuse;
+}
+void Renderer::setSpecular(const matvec::vec3 &specular) {
+  materialSpecular = specular;
+}
+
+void Renderer::setShininess(const float &shiny) { materialShininess = shiny; }
+
+void Renderer::setUseTexture(const bool &useTexture) {
+  this->useTexture = useTexture;
+}
+
 void Renderer::draw() {
   if (!shader || VAO == 0) {
     return; // Not initialized yet
@@ -109,6 +173,7 @@ void Renderer::draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   shader->use();
+
   // vert
   glUniformMatrix4fv(glGetUniformLocation(shader->id(), "M"), 1, GL_TRUE,
                      m_matrix.data);
@@ -117,27 +182,39 @@ void Renderer::draw() {
   glUniformMatrix4fv(glGetUniformLocation(shader->id(), "P"), 1, GL_TRUE,
                      p_matrix.data);
 
+  // Light properties
+  glUniform3f(glGetUniformLocation(shader->id(), "lightPos"), lightPos.x,
+              lightPos.y, lightPos.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "lightColor"), lightColor.x,
+              lightColor.y, lightColor.z);
+
+  // View position
+  glUniform3f(glGetUniformLocation(shader->id(), "viewPos"), viewPos.x,
+              viewPos.y, viewPos.z);
+
+  // Material properties
+  glUniform3f(glGetUniformLocation(shader->id(), "materialAmbient"),
+              materialAmbient.x, materialAmbient.y, materialAmbient.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialDiffuse"),
+              materialDiffuse.x, materialDiffuse.y, materialDiffuse.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialSpecular"),
+              materialSpecular.x, materialSpecular.y, materialSpecular.z);
+
+  // Shininess
+  glUniform1f(glGetUniformLocation(shader->id(), "materialShininess"),
+              materialShininess);
+
+  // Use texture flag
+  glUniform1i(glGetUniformLocation(shader->id(), "useTexture"),
+              useTexture ? 1 : 0);
+
+  if (useTexture && textureLoaded) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glUniform1i(glGetUniformLocation(shader->id(), "tex"), 0);
+  }
   // frag
-  //  uniform vec3 lightPos;
-  //  uniform vec3 lightColor;
-  //  uniform vec3 viewPos;
-  //
-  //  uniform vec3 materialAmbient;
-  //  uniform vec3 materialDiffuse;
-  //  uniform vec3 materialSpecular;
-  //  uniform float materialShininess;
-  //
-  //  uniform bool useTexture;
   //  uniform sampler2D tex;
-  // glUniformMatrix4fv(glGetUniformLocation(shader->id(), "lightPos"), 1,
-  // GL_TRUE,
-  //                    nullptr);
-  // glUniformMatrix4fv(glGetUniformLocation(shader->id(), "lightColor"), 1,
-  // GL_TRUE,
-  //                    nullptr);
-  // glUniformMatrix4fv(glGetUniformLocation(shader->id(), "viewPos"), 1,
-  // GL_TRUE,
-  //                    nullptr);
 
   glBindVertexArray(VAO);
 
