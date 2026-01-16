@@ -3,6 +3,7 @@
 #include "../core/window.hpp"
 #include "core/camera.hpp"
 #include "core/input.hpp"
+#include "vec3.hpp"
 #include <obj_loader.hpp>
 #include <types.hpp>
 
@@ -13,7 +14,6 @@ public:
   void loadObject(const std::string &filename);
 
   void onKey(int key, int scancode, int action, int mods) override;
-  void onMouseButton(int button, int action, int mods) override;
   void onMouseMove(double xpos, double ypos) override;
 
 private:
@@ -24,6 +24,11 @@ private:
   float farZ, fov, top, a, phi;
 
   bool m_mouseRotating = false;
+  bool useTexture = false;
+  matvec::vec3 lightPos = matvec::vec3();
+  matvec::vec3 lightColor = matvec::vec3(1.0f, 1.0f, 1.0f);
+  float shininess = 32.0f;
+
   double m_lastMouseX = 0.0;
   double m_lastMouseY = 0.0;
   bool m_firstMouse = true;

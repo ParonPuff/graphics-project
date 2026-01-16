@@ -17,14 +17,13 @@ Renderer::Renderer() {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
-  // ADD THIS: Create indices for the triangle
   unsigned int indices[] = {0, 1, 2};
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                GL_STATIC_DRAW);
 
-  indexCount = 3; // ADD THIS
+  indexCount = 3;
 
   glBindVertexArray(0);
 
@@ -38,39 +37,6 @@ Renderer::~Renderer() {
 }
 
 void Renderer::loadMesh(const Mesh &mesh) {
-  // if (VAO) {
-  //   glDeleteVertexArrays(1, &VAO);
-  //   glDeleteBuffers(1, &VBO);
-  //   glDeleteBuffers(1, &EBO);
-  // }
-  //
-  // glGenVertexArrays(1, &VAO);
-  // glBindVertexArray(VAO);
-  //
-  // std::vector<float> vertexData;
-  // vertexData.reserve(mesh.positions.size() * 3);
-  //
-  // for (auto &v : mesh.positions) {
-  //   vertexData.push_back(v.x);
-  //   vertexData.push_back(v.y);
-  //   vertexData.push_back(v.z);
-  // }
-  //
-  // indexCount = mesh.indices.size();
-  //
-  // glGenBuffers(1, &VBO);
-  // glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  // glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float),
-  //              vertexData.data(), GL_STATIC_DRAW);
-  //
-  // glGenBuffers(1, &EBO);
-  // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  // glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() *
-  // sizeof(unsigned),
-  //              mesh.indices.data(), GL_STATIC_DRAW);
-  //
-  // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void
-  // *)0); glEnableVertexAttribArray(0); Delete old buffers
   if (VBO)
     glDeleteBuffers(1, &VBO);
   if (EBO)
@@ -78,43 +44,55 @@ void Renderer::loadMesh(const Mesh &mesh) {
   if (VAO)
     glDeleteVertexArrays(1, &VAO);
 
-  // Create new VAO
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
 
-  // Prepare vertex data
   std::vector<float> vertexData;
-  vertexData.reserve(mesh.positions.size() * 3);
+  vertexData.reserve(mesh.positions.size() * mesh.normals.size() +
+                     mesh.uv.size());
 
-  for (auto &v : mesh.positions) {
-    vertexData.push_back(v.x);
-    vertexData.push_back(v.y);
-    vertexData.push_back(v.z);
+  for (size_t i = 0; i < mesh.positions.size(); ++i) {
+    vertexData.push_back(mesh.positions[i].x);
+    vertexData.push_back(mesh.positions[i].y);
+    vertexData.push_back(mesh.positions[i].z);
+
+    vertexData.push_back(mesh.normals[i].x);
+    vertexData.push_back(mesh.normals[i].y);
+    vertexData.push_back(mesh.normals[i].z);
+
+    vertexData.push_back(mesh.uv[i].x);
+    vertexData.push_back(mesh.uv[i].y);
   }
 
   indexCount = mesh.indices.size();
 
-  // Create and fill VBO
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float),
                vertexData.data(), GL_STATIC_DRAW);
 
-  // Create and fill EBO
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned),
                mesh.indices.data(), GL_STATIC_DRAW);
 
-  // Set up vertex attributes
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  const GLsizei stride = 8 * sizeof(float);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
   glEnableVertexAttribArray(0);
+
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+                        (void *)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
+                        (void *)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
 
   glBindVertexArray(0);
 
-  // ADD DEBUG OUTPUT:
   std::cout << "Loaded mesh: " << mesh.positions.size() << " vertices, "
-            << indexCount << " indices" << std::endl; // glBindVertexArray(0);
+            << indexCount << " indices" << std::endl;
 }
 void Renderer::setModelMatrix(const matvec::mat4 &m) { m_matrix = m; }
 
@@ -127,30 +105,41 @@ void Renderer::draw() {
     return; // Not initialized yet
   }
 
-  // std::cout << "entered render" << std::endl;
-
   glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // std::cout << "shader use" << std::endl;
   shader->use();
-
-  // std::cout << "set uniforms" << std::endl;
-  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "uModel"), 1, GL_TRUE,
+  // vert
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "M"), 1, GL_TRUE,
                      m_matrix.data);
-  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "uView"), 1, GL_TRUE,
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "V"), 1, GL_TRUE,
                      v_matrix.data);
-  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "uProj"), 1, GL_TRUE,
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "P"), 1, GL_TRUE,
                      p_matrix.data);
 
-  // std::cout << "bind vao" << std::endl;
+  // frag
+  //  uniform vec3 lightPos;
+  //  uniform vec3 lightColor;
+  //  uniform vec3 viewPos;
+  //
+  //  uniform vec3 materialAmbient;
+  //  uniform vec3 materialDiffuse;
+  //  uniform vec3 materialSpecular;
+  //  uniform float materialShininess;
+  //
+  //  uniform bool useTexture;
+  //  uniform sampler2D tex;
+  // glUniformMatrix4fv(glGetUniformLocation(shader->id(), "lightPos"), 1,
+  // GL_TRUE,
+  //                    nullptr);
+  // glUniformMatrix4fv(glGetUniformLocation(shader->id(), "lightColor"), 1,
+  // GL_TRUE,
+  //                    nullptr);
+  // glUniformMatrix4fv(glGetUniformLocation(shader->id(), "viewPos"), 1,
+  // GL_TRUE,
+  //                    nullptr);
+
   glBindVertexArray(VAO);
 
-  // std::cout << "VAO: " << VAO << std::endl;
-  // std::cout << "indexCount: " << indexCount << std::endl;
-  // std::cout << "About to draw..." << std::endl;
-
   glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
-
-  // std::cout << "exiting render" << std::endl;
 }

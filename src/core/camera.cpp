@@ -28,10 +28,8 @@ void Camera::moveLocal(float dx, float dy, float dz) {
   matvec::vec3 up(Vinv.data[1], Vinv.data[5], Vinv.data[9]);
   matvec::vec3 forward(Vinv.data[2], Vinv.data[6], Vinv.data[10]);
 
-  // Compute movement in world space
   matvec::vec3 delta = right * dx + up * dy + forward * dz;
 
-  // Move both camera position and reference point
   p0 = p0 + delta;
   pref = pref + delta;
 
@@ -39,14 +37,11 @@ void Camera::moveLocal(float dx, float dy, float dz) {
 }
 
 void Camera::rotateYaw(float r) {
-  // Get current direction
   matvec::vec3 dir = (pref - p0).normalized();
 
-  // Rotate direction around world Y-axis
   matvec::mat4 R = matvec::mat4::rotateY(r);
   matvec::vec4 newDir = R * matvec::vec4(dir, 0.0f);
 
-  // Update reference point at fixed distance
   pref = p0 + matvec::vec3(newDir) * dist;
 
   updateViewMatrix();

@@ -48,31 +48,24 @@ Window::Window(int width, int height, const char *title) {
 
   static bool loaded = false;
   if (!loaded) {
-    // Initialize glew
     glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
     if (glewError != GLEW_OK) {
       throw std::runtime_error("glew init error: " +
                                std::string(reinterpret_cast<const char *>(
                                    glewGetErrorString(glewError))));
-      // cout << "glew init error:" << endl << glewGetErrorString(glewError) <<
-      // endl; exit(EXIT_FAILURE);
     }
   }
 
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO &io = ImGui::GetIO();
-  (void)io; // Enable Keyboard Controls
-  io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableKeyboard; // Enable Gamepad Controls
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Setup Dear ImGui style
+  (void)io;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
   ImGui::StyleColorsDark();
-  // ImGui::StyleColorsClassic();
-  //  Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(m_window, true);
   ImGui_ImplOpenGL3_Init("#version 330");
-  // background
   glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
   glEnable(GL_DEPTH_TEST);
 }

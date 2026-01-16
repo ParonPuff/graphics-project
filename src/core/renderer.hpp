@@ -10,7 +10,6 @@ public:
   ~Renderer();
 
   void draw();
-  // void setWireframe(bool enabled);
   void setModelMatrix(const matvec::mat4 &m);
   void setViewMatrix(const matvec::mat4 &v);
   void setProjectionMatrix(const matvec::mat4 &p);
