@@ -47,15 +47,6 @@ void App::drawGui() {
 
   ImGui::SliderFloat("Far Z", &farZ, 1.0f, 100.0f);
 
-  ImGui::Checkbox("Use texture", &useTexture);
-  ImGui::SliderFloat3("Light position", &lightPos.x, -10.0f, 10.0f);
-  ImGui::ColorEdit3("Light color", &lightColor.x);
-
-  ImGui::ColorEdit3("Ambient", &materialAmbient.x);
-  ImGui::ColorEdit3("Diffuse", &materialDiffuse.x);
-  ImGui::ColorEdit3("Specular", &materialSpecular.x);
-  ImGui::SliderFloat("Shininess", &shininess, 1.0f, 128.0f);
-
   if (projectionMode == 0) {
     ImGui::SliderFloat("FOV", &fov, 20.0f, 120.0f);
   }
@@ -69,6 +60,15 @@ void App::drawGui() {
     ImGui::SliderFloat("a (shear strength)", &a, 0.0f, 2.0f);
     ImGui::SliderFloat("Phi (deg)", &phi, -90.0f, 90.0f);
   }
+
+  ImGui::SliderFloat3("Light position", &lightPos.x, -10.0f, 10.0f);
+  ImGui::ColorEdit3("Light color", &lightColor.x);
+
+  ImGui::ColorEdit3("Ambient", &materialAmbient.x);
+  ImGui::ColorEdit3("Diffuse", &materialDiffuse.x);
+  ImGui::ColorEdit3("Specular", &materialSpecular.x);
+  ImGui::SliderFloat("Shininess", &shininess, 1.0f, 128.0f);
+
 
   updateProjection(projectionMode);
 
@@ -97,6 +97,7 @@ void App::drawGui() {
     }
     ImGuiFileDialog::Instance()->Close();
   }
+  ImGui::Checkbox("Use texture", &useTexture);
 
   ImGui::End();
 }
@@ -196,16 +197,16 @@ void App::onKey(int key, int scancode, int action, int mods) {
     m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, -0.1, 0);
     break;
   case GLFW_KEY_UP:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateX(.17f);
+    m_modelMatrix = matvec::mat4::rotateX(.17f) * m_modelMatrix;
     break;
   case GLFW_KEY_DOWN:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateX(-.17f);
+    m_modelMatrix = matvec::mat4::rotateX(-.17f) * m_modelMatrix;
     break;
   case GLFW_KEY_LEFT:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateY(.17f);
+    m_modelMatrix = matvec::mat4::rotateY(.17f) * m_modelMatrix;
     break;
   case GLFW_KEY_RIGHT:
-    m_modelMatrix = m_modelMatrix * matvec::mat4::rotateY(-.17f);
+    m_modelMatrix = matvec::mat4::rotateY(-.17f) * m_modelMatrix;
     break;
   case GLFW_KEY_LEFT_SHIFT:
     if (action == GLFW_PRESS) {

@@ -4,6 +4,8 @@ in vec3 fragPos;
 in vec3 fragNormal;
 in vec2 fragTexCoord;
 
+out vec4 fragColor;
+
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
@@ -16,33 +18,35 @@ uniform float materialShininess;
 uniform bool useTexture;
 uniform sampler2D tex;
 
-out vec4 fragColor;
+void main()
+{
+    // --- Normalize inputs ---
+    vec3 N = normalize(fragNormal);
+    vec3 L = normalize(lightPos - fragPos);
+    vec3 V = normalize(viewPos - fragPos);
 
-void main() {
-  vec3 N = normalize(fragNormal);
-  vec3 L = normalize(lightPos - fragPos);
-  vec3 V = normalize(viewPos - fragPos);
-  vec3 R = reflect(-L, N);
+    // --- Blinn-Phong half vector ---
+    vec3 H = normalize(L + V);
 
-  // Ambient
-  vec3 ambient = materialAmbient * lightColor;
+    // --- Ambient ---
+    vec3 ambient = materialAmbient * lightColor;
 
-  // Diffuse
-  float diff = max(dot(N, L), 0.0);
-  vec3 diffuse = diff * materialDiffuse * lightColor;
+    // --- Diffuse (Lambert) ---
+    float diff = max(dot(N, L), 0.0);
+    vec3 diffuse = diff * materialDiffuse * lightColor;
 
-  // Specular (ONLY if diff > 0)
-  vec3 specular = vec3(0.0);
-  if (diff > 0.0) {
-      float spec = pow(max(dot(R, V), 0.0), materialShininess);
-      specular = spec * materialSpecular * lightColor;
-  }
+    // --- Specular (Blinn-Phong) ---
+    float specAngle = max(dot(N, H), 0.0);
+    float spec = pow(specAngle, materialShininess);
+    vec3 specular = spec * materialSpecular * lightColor;
 
-  // Texture
-  vec3 baseColor = materialDiffuse;
-  if (useTexture)
-      baseColor *= texture(tex, fragTexCoord).rgb;
+    // --- Texture (optional albedo modulation) ---
+    vec3 albedo = materialDiffuse;
+    if (useTexture)
+        albedo *= texture(tex, fragTexCoord).rgb;
 
-  vec3 color = ambient + diffuse + specular;
-  fragColor = vec4(color * baseColor, 1.0);
+    // --- Final lighting ---
+    vec3 color = ambient + diffuse + specular;
+
+    fragColor = vec4(color * albedo, 1.0);
 }

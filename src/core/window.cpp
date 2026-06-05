@@ -7,7 +7,6 @@
 #include <stdexcept>
 
 Window::Window(int width, int height, const char *title) {
-  glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);  // add this line
   if (!glfwInit())
     throw std::runtime_error("Failed to initialize glfw");
 

@@ -26,12 +26,13 @@ private:
   bool m_mouseRotating = false;
   bool useTexture = false;
 
-  matvec::vec3 lightPos = matvec::vec3();
+  matvec::vec3 lightPos = matvec::vec3(0.0f,0.0f,-5.0f);
   matvec::vec3 lightColor = matvec::vec3(1.0f, 1.0f, 1.0f);
 
-  matvec::vec3 materialAmbient = {0.1f, 0.1f, 0.1f};
+  matvec::vec3 materialAmbient = {1.0f, 1.0f, 1.0f};
   matvec::vec3 materialDiffuse = {0.8f, 0.8f, 0.8f};
   matvec::vec3 materialSpecular = {1.0f, 1.0f, 1.0f};
+
   float shininess = 32.0f;
 
   double m_lastMouseX = 0.0;

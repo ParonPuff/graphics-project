@@ -1,3 +1,4 @@
+#include "mat4.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "renderer.hpp"
 #include "../lib/stb_image.h"
@@ -175,38 +176,27 @@ void Renderer::draw() {
   shader->use();
 
   // vert
-  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "M"), 1, GL_TRUE,
-                     m_matrix.data);
-  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "V"), 1, GL_TRUE,
-                     v_matrix.data);
-  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "P"), 1, GL_TRUE,
-                     p_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "M"), 1, GL_TRUE, m_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "V"), 1, GL_TRUE, v_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "P"), 1, GL_TRUE, p_matrix.data);
 
   // Light properties
-  glUniform3f(glGetUniformLocation(shader->id(), "lightPos"), lightPos.x,
-              lightPos.y, lightPos.z);
-  glUniform3f(glGetUniformLocation(shader->id(), "lightColor"), lightColor.x,
-              lightColor.y, lightColor.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
 
   // View position
-  glUniform3f(glGetUniformLocation(shader->id(), "viewPos"), viewPos.x,
-              viewPos.y, viewPos.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "viewPos"), viewPos.x, viewPos.y, viewPos.z);
 
   // Material properties
-  glUniform3f(glGetUniformLocation(shader->id(), "materialAmbient"),
-              materialAmbient.x, materialAmbient.y, materialAmbient.z);
-  glUniform3f(glGetUniformLocation(shader->id(), "materialDiffuse"),
-              materialDiffuse.x, materialDiffuse.y, materialDiffuse.z);
-  glUniform3f(glGetUniformLocation(shader->id(), "materialSpecular"),
-              materialSpecular.x, materialSpecular.y, materialSpecular.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialAmbient"),  materialAmbient.x,  materialAmbient.y,  materialAmbient.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialDiffuse"),  materialDiffuse.x,  materialDiffuse.y,  materialDiffuse.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialSpecular"), materialSpecular.x, materialSpecular.y, materialSpecular.z);
 
   // Shininess
-  glUniform1f(glGetUniformLocation(shader->id(), "materialShininess"),
-              materialShininess);
+  glUniform1f(glGetUniformLocation(shader->id(), "materialShininess"), materialShininess);
 
   // Use texture flag
-  glUniform1i(glGetUniformLocation(shader->id(), "useTexture"),
-              useTexture ? 1 : 0);
+  glUniform1i(glGetUniformLocation(shader->id(), "useTexture"), useTexture ? 1 : 0);
 
   if (useTexture && textureLoaded) {
     glActiveTexture(GL_TEXTURE0);
@@ -214,9 +204,36 @@ void Renderer::draw() {
     glUniform1i(glGetUniformLocation(shader->id(), "tex"), 0);
   }
   // frag
-  //  uniform sampler2D tex;
 
   glBindVertexArray(VAO);
 
+  glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+
+  matvec::mat4 scale = matvec::mat4::identity()*0.1;
+  matvec::mat4 lightModel = scale * matvec::mat4::translate(lightPos.x,lightPos.y,lightPos.z);
+
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "M"), 1, GL_TRUE, lightModel.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "V"), 1, GL_TRUE, v_matrix.data);
+  glUniformMatrix4fv(glGetUniformLocation(shader->id(), "P"), 1, GL_TRUE, p_matrix.data);
+
+  // Light properties
+  glUniform3f(glGetUniformLocation(shader->id(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+
+  // View position
+  glUniform3f(glGetUniformLocation(shader->id(), "viewPos"), viewPos.x, viewPos.y, viewPos.z);
+
+  // Material properties
+  glUniform3f(glGetUniformLocation(shader->id(), "materialAmbient"),  materialAmbient.x,  materialAmbient.y,  materialAmbient.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialDiffuse"),  materialDiffuse.x,  materialDiffuse.y,  materialDiffuse.z);
+  glUniform3f(glGetUniformLocation(shader->id(), "materialSpecular"), materialSpecular.x, materialSpecular.y, materialSpecular.z);
+
+  // Shininess
+  glUniform1f(glGetUniformLocation(shader->id(), "materialShininess"), materialShininess);
+
+  // Use texture flag
+  glUniform1i(glGetUniformLocation(shader->id(), "useTexture"), 0);
+
+  glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 }
