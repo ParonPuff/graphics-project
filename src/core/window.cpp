@@ -7,6 +7,7 @@
 #include <stdexcept>
 
 Window::Window(int width, int height, const char *title) {
+  glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);  // add this line
   if (!glfwInit())
     throw std::runtime_error("Failed to initialize glfw");
 
@@ -42,6 +43,9 @@ Window::Window(int width, int height, const char *title) {
     if (handler)
       handler->onMouseMove(xpos, ypos);
   });
+  glfwSetWindowSizeCallback(m_window,[](GLFWwindow *win, int width, int height){
+    glViewport(0,0,width,height);
+  });
 
   glfwMakeContextCurrent(m_window);
   glfwSwapInterval(1);
@@ -51,9 +55,7 @@ Window::Window(int width, int height, const char *title) {
     glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
     if (glewError != GLEW_OK) {
-      throw std::runtime_error("glew init error: " +
-                               std::string(reinterpret_cast<const char *>(
-                                   glewGetErrorString(glewError))));
+      throw std::runtime_error("glew init error: " + std::string(reinterpret_cast<const char *>(glewGetErrorString(glewError))));
     }
   }
 
