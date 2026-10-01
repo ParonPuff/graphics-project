@@ -14,6 +14,8 @@
 
 App::App() : m_window(800, 600, "Studio 3D") {
   m_modelMatrix = matvec::mat4::identity();
+  m_renderer.setModelMatrix(m_modelMatrix);
+  m_renderer.setViewMatrix(camera.getViewMatrix());
   m_window.setInputHandler(this);
 
   fov = 60.0f;  // Standard field of view
@@ -23,6 +25,14 @@ App::App() : m_window(800, 600, "Studio 3D") {
   phi = 45.0f;  // Oblique angle in degrees
 
   updateProjection(0);
+  // set to default values
+  m_renderer.setLightPos(lightPos);
+  m_renderer.setLightColor(lightColor);
+  m_renderer.setAmbient(materialAmbient);
+  m_renderer.setDiffuse(materialDiffuse);
+  m_renderer.setSpecular(materialSpecular);
+  m_renderer.setShininess(shininess);
+  m_renderer.setUseTexture(useTexture);
 }
 
 void App::loadObject(const std::string &filename) {
@@ -30,6 +40,7 @@ void App::loadObject(const std::string &filename) {
   Mesh mesh = loader.load(filename);
 
   m_modelMatrix = matvec::mat4::identity();
+  m_renderer.setModelMatrix(m_modelMatrix);
 
   m_renderer.loadMesh(mesh);
 }
@@ -39,38 +50,49 @@ void App::drawGui() {
             "Missing dear imgui context.");
 
   ImGui::Begin("Controls");
-
   static int projectionMode = 0;
-  ImGui::RadioButton("Perspective", &projectionMode, 0);
-  ImGui::RadioButton("Orthographic", &projectionMode, 1);
-  ImGui::RadioButton("Oblique", &projectionMode, 2);
+  bool projectionChanged = false;
+  projectionChanged |= ImGui::RadioButton("Perspective", &projectionMode, 0);
+  projectionChanged |= ImGui::RadioButton("Orthographic", &projectionMode, 1);
+  projectionChanged |= ImGui::RadioButton("Oblique", &projectionMode, 2);
 
-  ImGui::SliderFloat("Far Z", &farZ, 1.0f, 100.0f);
+  projectionChanged |= ImGui::SliderFloat("Far Z", &farZ, 1.0f, 100.0f);
 
   if (projectionMode == 0) {
-    ImGui::SliderFloat("FOV", &fov, 20.0f, 120.0f);
+    projectionChanged |= ImGui::SliderFloat("FOV", &fov, 20.0f, 120.0f);
   }
 
   if (projectionMode == 1) {
-    ImGui::SliderFloat("Top", &top, 0.1f, 4.0f);
+    projectionChanged |= ImGui::SliderFloat("Top", &top, 0.1f, 4.0f);
   }
 
   if (projectionMode == 2) {
-    ImGui::SliderFloat("Top", &top, 0.1f, 4.0f);
-    ImGui::SliderFloat("a (shear strength)", &a, 0.0f, 2.0f);
-    ImGui::SliderFloat("Phi (deg)", &phi, -90.0f, 90.0f);
+    projectionChanged |= ImGui::SliderFloat("Top", &top, 0.1f, 4.0f);
+    projectionChanged |=
+        ImGui::SliderFloat("a (shear strength)", &a, 0.0f, 2.0f);
+    projectionChanged |= ImGui::SliderFloat("Phi (deg)", &phi, -90.0f, 90.0f);
   }
 
-  ImGui::SliderFloat3("Light position", &lightPos.x, -10.0f, 10.0f);
-  ImGui::ColorEdit3("Light color", &lightColor.x);
+  if (projectionChanged)
+    updateProjection(projectionMode);
 
-  ImGui::ColorEdit3("Ambient", &materialAmbient.x);
-  ImGui::ColorEdit3("Diffuse", &materialDiffuse.x);
-  ImGui::ColorEdit3("Specular", &materialSpecular.x);
-  ImGui::SliderFloat("Shininess", &shininess, 1.0f, 128.0f);
+  if (ImGui::SliderFloat3("Light position", &lightPos.x, -10.0f, 10.0f))
+    m_renderer.setLightPos(lightPos);
 
+  if (ImGui::ColorEdit3("Light color", &lightColor.x))
+    m_renderer.setLightColor(lightColor);
 
-  updateProjection(projectionMode);
+  if (ImGui::ColorEdit3("Ambient", &materialAmbient.x))
+    m_renderer.setAmbient(materialAmbient);
+
+  if (ImGui::ColorEdit3("Diffuse", &materialDiffuse.x))
+    m_renderer.setDiffuse(materialDiffuse);
+
+  if (ImGui::ColorEdit3("Specular", &materialSpecular.x))
+    m_renderer.setSpecular(materialSpecular);
+
+  if (ImGui::SliderFloat("Shininess", &shininess, 1.0f, 128.0f))
+    m_renderer.setShininess(shininess);
 
   if (ImGui::Button("Load OBJ")) {
     ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
@@ -97,7 +119,8 @@ void App::drawGui() {
     }
     ImGuiFileDialog::Instance()->Close();
   }
-  ImGui::Checkbox("Use texture", &useTexture);
+  if (ImGui::Checkbox("Use texture", &useTexture))
+    m_renderer.setUseTexture(useTexture);
 
   ImGui::End();
 }
@@ -137,20 +160,6 @@ void App::run() {
 
     drawGui();
 
-    m_renderer.setModelMatrix(m_modelMatrix);
-    m_renderer.setViewMatrix(camera.getViewMatrix());
-
-    m_renderer.setLightPos(lightPos);
-    m_renderer.setLightColor(lightColor);
-    m_renderer.setViewPos(camera.getPosition());
-
-    m_renderer.setAmbient(materialAmbient);
-    m_renderer.setDiffuse(materialDiffuse);
-    m_renderer.setSpecular(materialSpecular);
-
-    m_renderer.setShininess(shininess);
-
-    m_renderer.setUseTexture(useTexture);
     m_renderer.draw();
 
     ImGui::Render();
@@ -168,45 +177,65 @@ void App::onKey(int key, int scancode, int action, int mods) {
   switch (key) {
   case GLFW_KEY_W:
     camera.moveLocal(0, 0, -moveSpeed);
+    m_renderer.setViewPos(camera.getPosition());
+    m_renderer.setViewMatrix(camera.getViewMatrix());
     break;
   case GLFW_KEY_A:
     camera.moveLocal(-moveSpeed, 0, 0);
+    m_renderer.setViewPos(camera.getPosition());
+    m_renderer.setViewMatrix(camera.getViewMatrix());
     break;
   case GLFW_KEY_S:
     camera.moveLocal(0, 0, moveSpeed);
+    m_renderer.setViewPos(camera.getPosition());
+    m_renderer.setViewMatrix(camera.getViewMatrix());
     break;
   case GLFW_KEY_D:
     camera.moveLocal(moveSpeed, 0, 0);
+    m_renderer.setViewPos(camera.getPosition());
+    m_renderer.setViewMatrix(camera.getViewMatrix());
     break;
   case GLFW_KEY_E:
     camera.moveLocal(0, moveSpeed, 0);
+    m_renderer.setViewPos(camera.getPosition());
+    m_renderer.setViewMatrix(camera.getViewMatrix());
     break;
   case GLFW_KEY_Q:
     camera.moveLocal(0, -moveSpeed, 0);
+    m_renderer.setViewPos(camera.getPosition());
+    m_renderer.setViewMatrix(camera.getViewMatrix());
     break;
   case GLFW_KEY_J:
     m_modelMatrix = m_modelMatrix * matvec::mat4::translate(-0.1, 0, 0);
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_L:
     m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0.1, 0, 0);
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_I:
     m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, 0.1, 0);
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_K:
     m_modelMatrix = m_modelMatrix * matvec::mat4::translate(0, -0.1, 0);
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_UP:
     m_modelMatrix = matvec::mat4::rotateX(.17f) * m_modelMatrix;
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_DOWN:
     m_modelMatrix = matvec::mat4::rotateX(-.17f) * m_modelMatrix;
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_LEFT:
     m_modelMatrix = matvec::mat4::rotateY(.17f) * m_modelMatrix;
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_RIGHT:
     m_modelMatrix = matvec::mat4::rotateY(-.17f) * m_modelMatrix;
+    m_renderer.setModelMatrix(m_modelMatrix);
     break;
   case GLFW_KEY_LEFT_SHIFT:
     if (action == GLFW_PRESS) {
@@ -248,9 +277,11 @@ void App::onMouseMove(double xpos, double ypos) {
 
   if (deltaX != 0) {
     camera.rotateYaw(deltaX * sensitivity);
+    m_renderer.setViewMatrix(camera.getViewMatrix());
   }
 
   if (deltaY != 0) {
     camera.rotatePitch(deltaY * sensitivity);
+    m_renderer.setViewMatrix(camera.getViewMatrix());
   }
 }
