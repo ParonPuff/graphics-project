@@ -251,6 +251,6 @@ void App::onMouseMove(double xpos, double ypos) {
   }
 
   if (deltaY != 0) {
-    camera.rotatePitch(-deltaY * sensitivity);
+    camera.rotatePitch(deltaY * sensitivity);
   }
 }
