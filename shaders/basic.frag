@@ -48,8 +48,8 @@ void main()
       //float s = std::atan2(pointOnSphere.z, pointOnSphere.x) / (2.f * PI) + 0.5f; // longitude (u)
       //float t = std::acos(std::clamp(pointOnSphere.y / radius, -1.f, 1.f)) / M_PI; // latitude (v)
       float radius = length(fragSpherePoint);
-      float s = atan(fragSpherePoint.z, fragSpherePoint.x) / (2.f * PI) + 0.5f;
       float t = acos(fragSpherePoint.y / radius) / PI;
+      float s = atan(fragSpherePoint.z, fragSpherePoint.x) / (2.f * PI) + 0.5f;
 
       vec2 texCoord = vec2(s,t);
       albedo *= texture(tex, texCoord).rgb;
