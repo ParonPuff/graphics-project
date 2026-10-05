@@ -24,7 +24,14 @@ App::App() : m_window(800, 600, "Studio 3D") {
   a = 0.5f;     // Oblique shear strength
   phi = 45.0f;  // Oblique angle in degrees
 
-  updateProjection(0);
+  glfwSetFramebufferSizeCallback(
+      m_window.raw(), [](GLFWwindow *win, int w, int h) {
+        auto *self = static_cast<App *>(glfwGetWindowUserPointer(win));
+        glViewport(0, 0, w, h);
+        self->updateProjection();
+      });
+
+  updateProjection();
   // set to default values
   m_renderer.setLightPos(lightPos);
   m_renderer.setLightColor(lightColor);
@@ -50,7 +57,7 @@ void App::drawGui() {
             "Missing dear imgui context.");
 
   ImGui::Begin("Controls");
-  static int projectionMode = 0;
+
   bool projectionChanged = false;
   projectionChanged |= ImGui::RadioButton("Perspective", &projectionMode, 0);
   projectionChanged |= ImGui::RadioButton("Orthographic", &projectionMode, 1);
@@ -74,7 +81,7 @@ void App::drawGui() {
   }
 
   if (projectionChanged)
-    updateProjection(projectionMode);
+    updateProjection();
 
   if (ImGui::SliderFloat3("Light position", &lightPos.x, -10.0f, 10.0f))
     m_renderer.setLightPos(lightPos);
@@ -125,23 +132,20 @@ void App::drawGui() {
   ImGui::End();
 }
 
-void App::updateProjection(int mode) {
+void App::updateProjection() {
   int w, h;
   glfwGetFramebufferSize(m_window.raw(), &w, &h);
   float aspect = (float)w / (float)h;
-  matvec::mat4 P;
-  if (mode == 0) {
-    P = makePerspective(fov, aspect, 0.1f, farZ);
-  } else if (mode == 1) {
-    float bottom = -top;
-    float right = top * aspect;
-    float left = -right;
-    P = makeOrthographic(left, right, bottom, top, 0.1f, farZ);
-  } else if (mode == 2) {
-    float bottom = -top;
-    float right = top * aspect;
-    float left = -right;
+  float bottom = -top;
+  float right = top * aspect;
+  float left = -right;
 
+  matvec::mat4 P;
+  if (projectionMode == 0) {
+    P = makePerspective(fov, aspect, 0.1f, farZ);
+  } else if (projectionMode == 1) {
+    P = makeOrthographic(left, right, bottom, top, 0.1f, farZ);
+  } else if (projectionMode == 2) {
     matvec::mat4 ortho = makeOrthographic(left, right, bottom, top, 0.1f, farZ);
     P = makeOblique(ortho, a, phi);
   }

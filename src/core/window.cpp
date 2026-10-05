@@ -42,9 +42,13 @@ Window::Window(int width, int height, const char *title) {
     if (handler)
       handler->onMouseMove(xpos, ypos);
   });
-  glfwSetWindowSizeCallback(m_window,[](GLFWwindow *win, int width, int height){
-    glViewport(0,0,width,height);
-  });
+//  glfwSetWindowSizeCallback(m_window,[](GLFWwindow *win, int width, int height){
+//    glViewport(0,0,width,height);
+//  });
+
+//  glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow *win, int w, int h) {
+ //   glViewport(0, 0, w, h);
+  //});
 
   glfwMakeContextCurrent(m_window);
   glfwSwapInterval(1);
