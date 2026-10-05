@@ -90,8 +90,7 @@ void Renderer::loadMesh(const Mesh &mesh) {
   glBindVertexArray(VAO);
 
   std::vector<float> vertexData;
-  vertexData.reserve(mesh.positions.size() * mesh.normals.size() +
-                     mesh.uv.size());
+  vertexData.reserve(mesh.positions.size() * mesh.normals.size() + mesh.spherePoint.size());
 
   for (size_t i = 0; i < mesh.positions.size(); ++i) {
     vertexData.push_back(mesh.positions[i].x);
@@ -102,8 +101,9 @@ void Renderer::loadMesh(const Mesh &mesh) {
     vertexData.push_back(mesh.normals[i].y);
     vertexData.push_back(mesh.normals[i].z);
 
-    vertexData.push_back(mesh.uv[i].x);
-    vertexData.push_back(mesh.uv[i].y);
+    vertexData.push_back(mesh.spherePoint[i].x);
+    vertexData.push_back(mesh.spherePoint[i].y);
+    vertexData.push_back(mesh.spherePoint[i].z);
   }
 
   indexCount = mesh.indices.size();
@@ -118,7 +118,7 @@ void Renderer::loadMesh(const Mesh &mesh) {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned),
                mesh.indices.data(), GL_STATIC_DRAW);
 
-  const GLsizei stride = 8 * sizeof(float);
+  const GLsizei stride = 9 * sizeof(float);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
   glEnableVertexAttribArray(0);
@@ -127,7 +127,7 @@ void Renderer::loadMesh(const Mesh &mesh) {
                         (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride,
                         (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 

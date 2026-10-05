@@ -2,7 +2,7 @@
 
 in vec3 fragPos;
 in vec3 fragNormal;
-in vec2 fragTexCoord;
+in vec3 fragSpherePoint;
 
 out vec4 fragColor;
 
@@ -17,7 +17,7 @@ uniform float materialShininess;
 
 uniform bool useTexture;
 uniform sampler2D tex;
-
+#define PI 3.1415926538
 void main()
 {
     // --- Normalize inputs ---
@@ -42,8 +42,18 @@ void main()
 
     // --- Texture (optional albedo modulation) ---
     vec3 albedo = materialDiffuse;
-    if (useTexture)
-        albedo *= texture(tex, fragTexCoord).rgb;
+    
+    if (useTexture){
+	
+      //float s = std::atan2(pointOnSphere.z, pointOnSphere.x) / (2.f * PI) + 0.5f; // longitude (u)
+      //float t = std::acos(std::clamp(pointOnSphere.y / radius, -1.f, 1.f)) / M_PI; // latitude (v)
+      float radius = length(fragSpherePoint);
+      float s = atan(fragSpherePoint.z, fragSpherePoint.x) / (2.f * PI) + 0.5f;
+      float t = acos(fragSpherePoint.y / radius) / PI;
+
+      vec2 texCoord = vec2(s,t);
+      albedo *= texture(tex, texCoord).rgb;
+    }
 
     // --- Final lighting ---
     vec3 color = ambient + diffuse + specular;
