@@ -18,21 +18,17 @@ App::App() : m_window(800, 600, "Studio 3D") {
   m_renderer.setViewMatrix(camera.getViewMatrix());
   m_window.setInputHandler(this);
 
-  fov = 60.0f;  // Standard field of view
-  farZ = 50.0f; // Far clipping plane
-  top = 2.0f;   // Orthographic/oblique top bound
-  a = 0.5f;     // Oblique shear strength
-  phi = 45.0f;  // Oblique angle in degrees
-
   glfwSetFramebufferSizeCallback(
       m_window.raw(), [](GLFWwindow *win, int w, int h) {
         auto *self = static_cast<App *>(glfwGetWindowUserPointer(win));
         glViewport(0, 0, w, h);
         self->updateProjection();
-      });
+      }
+  );
 
   updateProjection();
-  // set to default values
+
+  //  propogate default values
   m_renderer.setLightPos(lightPos);
   m_renderer.setLightColor(lightColor);
   m_renderer.setAmbient(materialAmbient);
@@ -53,8 +49,7 @@ void App::loadObject(const std::string &filename) {
 }
 
 void App::drawGui() {
-  IM_ASSERT(ImGui::GetCurrentContext() != NULL &&
-            "Missing dear imgui context.");
+  IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing dear imgui context.");
 
   ImGui::Begin("Controls");
 
@@ -65,18 +60,15 @@ void App::drawGui() {
 
   projectionChanged |= ImGui::SliderFloat("Far Z", &farZ, 1.0f, 100.0f);
 
-  if (projectionMode == 0) {
+  if (projectionMode == 0)
     projectionChanged |= ImGui::SliderFloat("FOV", &fov, 20.0f, 120.0f);
-  }
 
-  if (projectionMode == 1) {
+  if (projectionMode == 1)
     projectionChanged |= ImGui::SliderFloat("Top", &top, 0.1f, 4.0f);
-  }
 
-  if (projectionMode == 2) {
+  if (projectionMode == 2){
     projectionChanged |= ImGui::SliderFloat("Top", &top, 0.1f, 4.0f);
-    projectionChanged |=
-        ImGui::SliderFloat("a (shear strength)", &a, 0.0f, 2.0f);
+    projectionChanged |= ImGui::SliderFloat("a (shear strength)", &a, 0.0f, 2.0f);
     projectionChanged |= ImGui::SliderFloat("Phi (deg)", &phi, -90.0f, 90.0f);
   }
 
@@ -102,8 +94,7 @@ void App::drawGui() {
     m_renderer.setShininess(shininess);
 
   if (ImGui::Button("Load OBJ")) {
-    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
-                                            ".obj", ".");
+    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".obj", ".");
   }
 
   if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
@@ -115,8 +106,7 @@ void App::drawGui() {
   }
 
   if (ImGui::Button("load Texture")) {
-    ImGuiFileDialog::Instance()->OpenDialog("texKey", "Choose File", ".bmp",
-                                            ".");
+    ImGuiFileDialog::Instance()->OpenDialog("texKey", "Choose File", ".bmp", ".");
   }
 
   if (ImGuiFileDialog::Instance()->Display("texKey")) {
@@ -135,6 +125,7 @@ void App::drawGui() {
 void App::updateProjection() {
   int w, h;
   glfwGetFramebufferSize(m_window.raw(), &w, &h);
+
   float aspect = (float)w / (float)h;
   float bottom = -top;
   float right = top * aspect;

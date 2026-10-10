@@ -4,29 +4,27 @@
 #include "../lib/stb_image.h"
 #include "core/shader.hpp"
 #include <iostream>
-#include <vector>
 
 Renderer::Renderer() {
 
-  float vertecies[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+  float triangleVertecies[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+  unsigned int triangleIndices[] = {0, 1, 2};
+  indexCount = 3;
 
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
 
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertecies), vertecies, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertecies), triangleVertecies, GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
-  unsigned int indices[] = {0, 1, 2};
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-               GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triangleIndices), triangleIndices, GL_STATIC_DRAW);
 
-  indexCount = 3;
 
   glBindVertexArray(0);
 
@@ -62,13 +60,11 @@ void Renderer::loadTexture(const std::string &path) {
   // Texture parameters (very important)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                  GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   // Upload image
-  glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format,
-               GL_UNSIGNED_BYTE, data);
+  glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
   glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -110,60 +106,45 @@ void Renderer::loadMesh(const Mesh &mesh) {
 
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float),
-               vertexData.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
 
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned),
-               mesh.indices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned), mesh.indices.data(), GL_STATIC_DRAW);
 
   const GLsizei stride = 9 * sizeof(float);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
   glEnableVertexAttribArray(0);
 
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
-                        (void *)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride,
-                        (void *)(6 * sizeof(float)));
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
   glBindVertexArray(0);
 
-  std::cout << "Loaded mesh: " << mesh.positions.size() << " vertices, "
-            << indexCount << " indices" << std::endl;
+  std::cout << "Loaded mesh: " << mesh.positions.size() << " vertices, " << indexCount << " indices" << std::endl;
 }
-void Renderer::setModelMatrix(const matvec::mat4 &m) { m_matrix = m; }
+//set matrices
+void Renderer::setModelMatrix		(const matvec::mat4 &m) 	{ m_matrix = m; }
+void Renderer::setViewMatrix		(const matvec::mat4 &v) 	{ v_matrix = v; }
+void Renderer::setProjectionMatrix	(const matvec::mat4 &p) 	{ p_matrix = p; }
 
-void Renderer::setViewMatrix(const matvec::mat4 &v) { v_matrix = v; }
+//set positions
+void Renderer::setLightPos		(const matvec::vec3 &lightP) 	{ lightPos = lightP; }
+void Renderer::setViewPos		(const matvec::vec3 &viewP) 	{ viewPos = viewP; }
 
-void Renderer::setProjectionMatrix(const matvec::mat4 &p) { p_matrix = p; }
+//set lighting
+void Renderer::setLightColor		(const matvec::vec3 &lightC) 	{ lightColor = lightC; }
+void Renderer::setAmbient		(const matvec::vec3 &ambient) 	{ materialAmbient = ambient; }
+void Renderer::setDiffuse		(const matvec::vec3 &diffuse) 	{ materialDiffuse = diffuse; }
+void Renderer::setSpecular		(const matvec::vec3 &specular) 	{ materialSpecular = specular; }
+void Renderer::setShininess		(const float &shiny) 		{ materialShininess = shiny; }
 
-void Renderer::setLightPos(const matvec::vec3 &lightP) { lightPos = lightP; }
-
-void Renderer::setLightColor(const matvec::vec3 &lightC) {
-  lightColor = lightC;
-}
-void Renderer::setViewPos(const matvec::vec3 &viewP) { viewPos = viewP; }
-
-void Renderer::setAmbient(const matvec::vec3 &ambient) {
-  materialAmbient = ambient;
-}
-void Renderer::setDiffuse(const matvec::vec3 &diffuse) {
-  materialDiffuse = diffuse;
-}
-void Renderer::setSpecular(const matvec::vec3 &specular) {
-  materialSpecular = specular;
-}
-
-void Renderer::setShininess(const float &shiny) { materialShininess = shiny; }
-
-void Renderer::setUseTexture(const bool &useTexture) {
-  this->useTexture = useTexture;
-}
+//use texture
+void Renderer::setUseTexture		(const bool &useTexture) 	{ this->useTexture = useTexture; }
 
 void Renderer::draw() {
   if (!shader || VAO == 0) {
@@ -203,8 +184,8 @@ void Renderer::draw() {
     glBindTexture(GL_TEXTURE_2D, textureID);
     glUniform1i(glGetUniformLocation(shader->id(), "tex"), 0);
   }
+  //
   // frag
-
   glBindVertexArray(VAO);
 
   glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);

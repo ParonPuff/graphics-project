@@ -21,7 +21,8 @@ private:
   Renderer m_renderer;
   Camera camera;
   matvec::mat4 m_modelMatrix;
-  float farZ, fov, top, a, phi;
+
+  float farZ = 60.0f, fov = 50.0f, top = 2.0f, a = 0.5f, phi = 45.0f;
 
   bool m_mouseRotating = false;
   bool useTexture = false;
@@ -36,8 +37,8 @@ private:
   int projectionMode = 0;
   float shininess = 32.0f;
 
-  double m_lastMouseX = 0.0;
-  double m_lastMouseY = 0.0;
+  double m_lastMouseX;
+  double m_lastMouseY;
   bool m_firstMouse = true;
 
   void drawGui();

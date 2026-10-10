@@ -22,22 +22,19 @@ Window::Window(int width, int height, const char *title) {
 
   glfwSetWindowUserPointer(m_window, nullptr);
 
-  glfwSetKeyCallback(m_window, [](GLFWwindow *win, int key, int scancode,
-                                  int action, int mods) {
+  glfwSetKeyCallback(m_window, [](GLFWwindow *win, int key, int scancode, int action, int mods) {
     auto *handler = static_cast<InputHandler *>(glfwGetWindowUserPointer(win));
     if (handler)
       handler->onKey(key, scancode, action, mods);
   });
 
-  glfwSetMouseButtonCallback(m_window, [](GLFWwindow *win, int button,
-                                          int action, int mods) {
+  glfwSetMouseButtonCallback(m_window, [](GLFWwindow *win, int button, int action, int mods) {
     auto *handler = static_cast<InputHandler *>(glfwGetWindowUserPointer(win));
     if (handler)
       handler->onMouseButton(button, action, mods);
   });
 
-  glfwSetCursorPosCallback(m_window, [](GLFWwindow *win, double xpos,
-                                        double ypos) {
+  glfwSetCursorPosCallback(m_window, [](GLFWwindow *win, double xpos, double ypos) {
     auto *handler = static_cast<InputHandler *>(glfwGetWindowUserPointer(win));
     if (handler)
       handler->onMouseMove(xpos, ypos);
